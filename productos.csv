@@ -1,4 +1,4 @@
-SKU,Descripcion Revista,Marca,Categoria,Stock,Precio CB,Puntos
+SKU,Descripcion Revista,Marca,Categoria,Stock,Vos Pagas,Puntos
 123952,Tododia Crema hidratante corporal algodón 80 ml,NATURA,Cuerpo,7889,3.000,3
 179464,Tododia Crema hidratante para pies té de manzanilla y lavanda 50ml,NATURA,Cuerpo,7727,5.000,5
 72178,Tododia Crema nutritiva para manos algodón 50ml,NATURA,Cuerpo,1743,3.500,3
@@ -26,20 +26,20 @@ SKU,Descripcion Revista,Marca,Categoria,Stock,Precio CB,Puntos
 148507,Kaiak clásico eau de toilette femenino 25ml,NATURA,Perfumeria,1564,15.000,14
 140385,Tododia bodysplash Frambuesa y pimienta rosa 200ml,NATURA,Perfumeria,1275,15.000,14
 115758,Urbano nox eau de toilette masculino 100ml,NATURA,Perfumeria,1021,20.000,19
-158703,Color Trend delineador liquido plateado,AVON CFT,Maquillaje,3871,4500,4
-158625,Color Trend delineador liquido marron,AVON CFT,Maquillaje,3577,4500,4
-158627,Color Trend delineador liquido verde,AVON CFT,Maquillaje,3601,4500,4
-158696,Color Trend delineador liquido rojo,AVON CFT,Maquillaje,4150,4500,4
-158620,Color Trend delineador liquido dorado,AVON CFT,Maquillaje,2528,4500,4
-152338,Color Trend delineador liquido verde,AVON CFT,Maquillaje,1253,4500,4
-158817,Color Trend delineador liquido rosa,AVON CFT,Maquillaje,504,4500,4
-208722,Avon Powerstay labial mate russet,AVON CFT,Maquillaje,28596,9000,9
-208724,Avon Powerstay labial mate burgundy,AVON CFT,Maquillaje,8971,9000,9
-208723,Avon Powerstay labial mate scarlet,AVON CFT,Maquillaje,5713,9000,9
-207689,Anew protector solar facial medio claro FPS50 40g,AVON CFT,Protección Solar,3407,15000,14
-207760,Anew protector solar facial claro FPS50 40g,AVON CFT,Protección Solar,7194,15000,14
-207455,Avon Care Crema Manos Silicone 50gr,AVON CFT,Cuerpo,33522,2600,2
-207454,Avon Care Crema Manos Palta 50gr,AVON CFT,Cuerpo,23054,2600,2
-207831,Avon Care Crema Manos 75gr,AVON CFT,Cuerpo,8333,3000,3
-207725,Avon Care Crema Corporal Palta 1lt,AVON CFT,Cuerpo,5554,14000,13
-207456,Avon Care Crema Manos Coco 50gr,AVON CFT,Cuerpo,11696,2900,3
+158703,Color Trend delineador liquido plateado,AVON,Maquillaje,3871,4500,4
+158625,Color Trend delineador liquido marron,AVON,Maquillaje,3577,4500,4
+158627,Color Trend delineador liquido verde,AVON,Maquillaje,3601,4500,4
+158696,Color Trend delineador liquido rojo,AVON,Maquillaje,4150,4500,4
+158620,Color Trend delineador liquido dorado,AVON,Maquillaje,2528,4500,4
+152338,Color Trend delineador liquido verde,AVON,Maquillaje,1253,4500,4
+158817,Color Trend delineador liquido rosa,AVON,Maquillaje,504,4500,4
+208722,Avon Powerstay labial mate russet,AVON,Maquillaje,28596,9000,9
+208724,Avon Powerstay labial mate burgundy,AVON,Maquillaje,8971,9000,9
+208723,Avon Powerstay labial mate scarlet,AVON,Maquillaje,5713,9000,9
+207689,Anew protector solar facial medio claro FPS50 40g,AVON,Protección Solar,3407,15000,14
+207760,Anew protector solar facial claro FPS50 40g,AVON,Protección Solar,7194,15000,14
+207455,Avon Care Crema Manos Silicone 50gr,AVON,Cuerpo,33522,2600,2
+207454,Avon Care Crema Manos Palta 50gr,AVON,Cuerpo,23054,2600,2
+207831,Avon Care Crema Manos 75gr,AVON,Cuerpo,8333,3000,3
+207725,Avon Care Crema Corporal Palta 1lt,AVON,Cuerpo,5554,14000,13
+207456,Avon Care Crema Manos Coco 50gr,AVON,Cuerpo,11696,2600,2
