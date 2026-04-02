@@ -89,10 +89,9 @@
         });
 
         function fetchProductsData() {
-            // Usamos PapaParse para leer el archivo local CSV
             Papa.parse("./productos.csv", {
                 download: true,
-                header: true, // Usa la primera fila como nombres de las variables (SKU, Precio CB, etc)
+                header: true,
                 skipEmptyLines: true,
                 complete: function(results) {
                     allProducts = results.data;
@@ -123,7 +122,12 @@
         }
 
         function processDataAndRender() {
-            const cats = new Set(allProducts.map(p => p['Categoria']).filter(c => c && c.trim() !== ''));
+            // Lógica Anti-Tildes para unificar categorías
+            const cats = new Set(allProducts.map(p => {
+                let cat = p['Categoria'];
+                return cat ? cat.normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim() : '';
+            }).filter(c => c !== ''));
+            
             uniqueCategories = ['Todas', ...cats];
 
             renderFilters();
@@ -151,7 +155,12 @@
                     if (cat === 'Todas') {
                         renderProducts(allProducts);
                     } else {
-                        renderProducts(allProducts.filter(p => p['Categoria'] === cat));
+                        // Al filtrar, también comparamos sin tildes por las dudas
+                        renderProducts(allProducts.filter(p => {
+                            let itemCat = p['Categoria'];
+                            let normalizedCat = itemCat ? itemCat.normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim() : '';
+                            return normalizedCat === cat;
+                        }));
                     }
                 });
                 container.appendChild(btn);
@@ -190,7 +199,8 @@
                 let descLimpia = (item['Descripcion Revista'] || '').replace(new RegExp(item['Marca'], 'ig'), '').trim();
                 descLimpia = descLimpia.replace(/\s+/g, ' '); 
 
-                const precio = item['Precio CB'] ? `$${item['Precio CB']}` : 'Consulte';
+                // Tomamos la columna "Vos Pagas" en lugar de "Precio CB"
+                const precio = item['Vos Pagas'] ? `$${item['Vos Pagas']}` : 'Consulte';
                 const puntos = item['Puntos'] ? `${item['Puntos']} pts` : '';
 
                 card.innerHTML = `
@@ -227,7 +237,7 @@
                         
                         <div class="pt-3 border-t border-gray-100 mt-2 flex items-center justify-between">
                             <div class="flex flex-col">
-                                <span class="text-[10px] text-secondaryText uppercase tracking-widest">Precio CB</span>
+                                <span class="text-[10px] text-secondaryText uppercase tracking-widest">Vos Pagas</span>
                                 <span class="text-lg font-semibold text-natura-orange">${precio}</span>
                             </div>
                             <div class="flex flex-col items-end">
