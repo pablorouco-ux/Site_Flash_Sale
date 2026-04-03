@@ -30,10 +30,6 @@
                     fontFamily: {
                         sans: ['NaturaAndCo', 'Inter', 'sans-serif'],
                         heading: ['Montserrat', 'Inter', 'sans-serif']
-                    },
-                    boxShadow: {
-                        'natura-sm': '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
-                        'natura-md': '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
                     }
                 }
             }
@@ -42,30 +38,30 @@
 
     <style>
         body { background-color: #F8FAFC; color: #1F2937; font-family: 'Inter', sans-serif; }
-        h1, h2, h3, h4, h5, h6 { font-family: 'Montserrat', sans-serif; text-transform: lowercase; }
+        /* Forzar primera letra en mayúscula para las descripciones */
+        .product-description::first-letter {
+            text-transform: uppercase;
+        }
         .swal2-popup.natura-swal { border-radius: 1.5rem !important; font-family: 'Inter', sans-serif; }
+        /* Ocultar scrollbar de categorías */
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
 <body class="antialiased min-h-screen">
 
-    <header class="bg-white border-b border-gray-100 shadow-sm sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <i data-lucide="leaf" class="text-natura-orange w-8 h-8"></i>
-                <h1 class="text-2xl font-semibold capitalize tracking-tight text-mainText">Natura Flash Sale</h1>
-            </div>
-        </div>
-        
+    <nav class="bg-white border-b border-gray-100 shadow-sm sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div id="category-filters" class="flex items-center space-x-8 overflow-x-auto py-2 scrollbar-hide"></div>
+            <div id="category-filters" class="flex items-center space-x-8 overflow-x-auto py-4 scrollbar-hide">
+                </div>
         </div>
-    </header>
+    </nav>
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         
         <div id="loading-state" class="flex flex-col items-center justify-center py-20">
             <div class="w-12 h-12 rounded-full border-4 border-gray-100 border-t-natura-orange animate-spin mb-4"></div>
-            <p class="text-secondaryText animate-pulse font-medium">cargando catálogo...</p>
+            <p class="text-secondaryText animate-pulse font-medium">Cargando catálogo...</p>
         </div>
 
         <div id="products-grid" class="hidden grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
@@ -95,7 +91,6 @@
                 skipEmptyLines: true,
                 complete: function(results) {
                     allProducts = results.data;
-                    
                     if (allProducts.length > 0) {
                         processDataAndRender();
                         document.getElementById('loading-state').classList.add('hidden');
@@ -122,14 +117,13 @@
         }
 
         function processDataAndRender() {
-            // Lógica Anti-Tildes para unificar categorías
+            // Normalización para unificar categorías y quitar tildes
             const cats = new Set(allProducts.map(p => {
                 let cat = p['Categoria'];
-                return cat ? cat.normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim() : '';
+                return cat ? cat.normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().toLowerCase() : '';
             }).filter(c => c !== ''));
             
-            uniqueCategories = ['Todas', ...cats];
-
+            uniqueCategories = ['todas', ...cats];
             renderFilters();
             renderProducts(allProducts);
         }
@@ -140,8 +134,9 @@
 
             uniqueCategories.forEach((cat, index) => {
                 const btn = document.createElement('button');
-                btn.innerText = cat.toLowerCase();
-                btn.className = `whitespace-nowrap pb-4 pt-1 font-medium text-sm transition-colors border-b-[3px] 
+                // Capitalize en el texto del botón
+                btn.innerText = cat.charAt(0).toUpperCase() + cat.slice(1);
+                btn.className = `whitespace-nowrap pb-1 pt-1 font-medium text-sm transition-colors border-b-[3px] 
                     ${index === 0 ? 'border-natura-orange text-natura-orange' : 'border-transparent text-secondaryText hover:text-mainText'}`;
                 
                 btn.addEventListener('click', () => {
@@ -152,14 +147,13 @@
                     btn.classList.remove('border-transparent', 'text-secondaryText');
                     btn.classList.add('border-natura-orange', 'text-natura-orange');
 
-                    if (cat === 'Todas') {
+                    if (cat === 'todas') {
                         renderProducts(allProducts);
                     } else {
-                        // Al filtrar, también comparamos sin tildes por las dudas
                         renderProducts(allProducts.filter(p => {
                             let itemCat = p['Categoria'];
-                            let normalizedCat = itemCat ? itemCat.normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim() : '';
-                            return normalizedCat === cat;
+                            let norm = itemCat ? itemCat.normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().toLowerCase() : '';
+                            return norm === cat;
                         }));
                     }
                 });
@@ -180,7 +174,6 @@
             }
 
             emptyState.classList.add('hidden');
-            emptyState.classList.remove('flex');
             grid.classList.remove('hidden');
 
             products.forEach(item => {
@@ -188,18 +181,17 @@
                 const isOutOfStock = stock <= 0;
                 
                 const card = document.createElement('article');
-                card.className = `group bg-card border border-gray-100 rounded-2xl p-4 transition-all duration-300 shadow-natura-sm
-                                ${isOutOfStock ? 'opacity-60 grayscale-[50%] pointer-events-none' : 'hover:-translate-y-1 hover:shadow-natura-md'}`;
+                card.className = `group bg-card border border-gray-100 rounded-2xl p-4 transition-all duration-300 shadow-sm
+                                ${isOutOfStock ? 'opacity-60 grayscale-[50%]' : 'hover:-translate-y-1 hover:shadow-md'}`;
 
                 const fallbackImg = "https://placehold.co/400x400/F4F4F4/9CA3AF?text=Imagen+No+Disponible";
                 const imgSrc = `./Imagenes/${item['SKU']}.jpg`;
-
                 const marcaText = (item['Marca'] || 'Natura').toUpperCase();
                 
+                // Limpieza de marca en la descripción
                 let descLimpia = (item['Descripcion Revista'] || '').replace(new RegExp(item['Marca'], 'ig'), '').trim();
                 descLimpia = descLimpia.replace(/\s+/g, ' '); 
 
-                // Tomamos la columna "Vos Pagas" en lugar de "Precio CB"
                 const precio = item['Vos Pagas'] ? `$${item['Vos Pagas']}` : 'Consulte';
                 const puntos = item['Puntos'] ? `${item['Puntos']} pts` : '';
 
@@ -211,16 +203,14 @@
                              class="w-full h-full object-cover mix-blend-multiply" />
                         
                         ${!isOutOfStock ? `
-                        <div class="absolute top-0 right-0 bg-white/90 backdrop-blur-sm text-mainText text-[10px] font-bold px-2 py-1 rounded-bl-xl">
+                        <div class="absolute top-0 right-0 bg-white/90 backdrop-blur-sm text-mainText text-[10px] font-bold px-2 py-1 rounded-bl-xl border-l border-b border-gray-100">
                             Stock: ${stock} ud.
                         </div>
-                        ` : ''}
-
-                        ${isOutOfStock ? `
+                        ` : `
                         <div class="absolute inset-0 bg-black/40 flex items-center justify-center backdrop-blur-[1px]">
-                            <span class="bg-card text-mainText font-semibold px-4 py-2 rounded-xl text-sm shadow-lg">Sin Stock</span>
+                            <span class="bg-card text-mainText font-semibold px-4 py-2 rounded-xl text-sm shadow-lg tracking-tight">Sin Stock</span>
                         </div>
-                        ` : ''}
+                        `}
                     </div>
 
                     <div class="space-y-1">
@@ -231,7 +221,7 @@
                             </span>
                         </div>
                         
-                        <h3 class="text-sm font-medium text-mainText line-clamp-2 min-h-[2.5rem]">
+                        <h3 class="product-description text-sm font-medium text-mainText line-clamp-2 min-h-[2.5rem] lowercase">
                             ${descLimpia}
                         </h3>
                         
